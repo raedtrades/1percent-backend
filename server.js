@@ -39,3 +39,5 @@ async function sendEmail(to, subject, html) {
 app.get('/', (req, res) => {
   res.json({ status: 'The1Percent Backend online' });
 });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('Server running on port ' + PORT));
