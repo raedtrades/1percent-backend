@@ -42,6 +42,30 @@ async function sendEmail(to, subject, html) {
   }
 }
 
+
+// ── ASSIGN DISCORD ROLE ──
+async function assignDiscordRole(discordUserId, plan) {
+  var roleId = plan === 'senales' ? process.env.DISCORD_ROLE_SENALES : process.env.DISCORD_ROLE_VIP;
+  var guildId = process.env.DISCORD_GUILD_ID;
+  var token = process.env.DISCORD_BOT_TOKEN;
+  if (!roleId || !guildId || !token || !discordUserId) return;
+  try {
+    await axios.put(
+      'https://discord.com/api/v10/guilds/' + guildId + '/members/' + discordUserId + '/roles/' + roleId,
+      {},
+      { headers: { 'Authorization': 'Bot ' + token, 'Content-Type': 'application/json' } }
+    );
+    console.log('Discord role assigned to:', discordUserId);
+  } catch (err) {
+    console.error('Discord error:', err.response ? JSON.stringify(err.response.data) : err.message);
+  }
+}
+
+// ── SEND DISCORD DM WITH INSTRUCTIONS ──
+async function sendDiscordInstructions(discordUsername, customerEmail, plan) {
+  console.log('Discord access pending for:', discordUsername, '-> plan:', plan);
+}
+
 // ── SAVE SUBSCRIBER TO SUPABASE ──
 async function saveSubscriber(name, email) {
   try {
