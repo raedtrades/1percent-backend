@@ -20,7 +20,7 @@ const NP_HEADERS = {
 async function sendEmail(to, subject, html) {
   try {
     await axios.post('https://api.resend.com/emails', {
-      from: 'The1Percent <onboarding@resend.dev>',
+      from: 'Raed — The1Percent <raed@the1percentformula.com>',,
       to: to,
       subject: subject,
       html: html
