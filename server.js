@@ -224,12 +224,17 @@ app.get('/', function(req, res) {
 // ── EMAIL TEMPLATES ──
 function emailWrapper(content) {
   return '<div style="max-width:600px;margin:0 auto;background:#0D0D10;font-family:Arial,sans-serif;color:#F0EBE0">' +
-    '<div style="background:#060608;padding:28px 32px;text-align:center;border-bottom:2px solid #C8A84B">' +
-    '<h1 style="font-size:1.3rem;font-weight:700;color:#C8A84B;margin:0">The 1% Trading Formula</h1>' +
+    '<div style="background:#060608;padding:24px 32px;text-align:center;border-bottom:2px solid #C8A84B;display:flex;align-items:center;justify-content:center;gap:16px">' +
+    '<img src="https://the1percentformula.com/logo.png" alt="The 1% Trading Formula" style="width:52px;height:52px;object-fit:contain">' +
+    '<div style="text-align:left">' +
+    '<h1 style="font-size:1.1rem;font-weight:700;color:#C8A84B;margin:0">The 1% Trading Formula</h1>' +
+    '<p style="font-size:.7rem;color:#666;margin:2px 0 0">@raedtrades_</p>' +
+    '</div>' +
     '</div>' +
     '<div style="padding:36px 32px">' + content + '</div>' +
     '<div style="padding:20px 32px;border-top:1px solid #222;text-align:center">' +
-    '<p style="font-size:.7rem;color:#444">The 1% Trading Formula · the1percentformula.com · @raedtrades_</p>' +
+    '<a href="https://the1percentformula.com" style="color:#C8A84B;font-size:.72rem;text-decoration:none">the1percentformula.com</a>' +
+    '<p style="font-size:.65rem;color:#333;margin-top:8px">Trading implica riesgo · No es asesoramiento financiero</p>' +
     '</div></div>';
 }
 
@@ -250,7 +255,8 @@ function refLink(platform, url, code, discount, description, cta) {
 
 // Email 1: Bienvenida inmediata
 async function sendWelcomeEmail(name, email) {
-  var content = '<h2 style="font-size:1.6rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Bienvenido ' + (name || '') + ' 🐂</h2>' +
+  var content = '<img src="https://the1percentformula.com/og-image.jpg" alt="The 1% Trading Formula" style="width:100%;display:block;margin-bottom:28px;border:1px solid #C8A84B22">' +
+    '<h2 style="font-size:1.6rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Bienvenido ' + (name || '') + ' 🐂</h2>' +
     '<p style="color:#888;line-height:1.7;margin-bottom:28px">Gracias por unirte. Desde manana recibiras mi analisis diario de GC Comex y Nasdaq. Mientras tanto, aqui tienes mis recursos exclusivos:</p>' +
     refLink('Tradeify — Prop Firm', 'https://tradeify.co/?ref=BTER2VJV', 'RAED', '30% de descuento', 'La prop firm que uso para operar GC y Nasdaq. Evaluaciones rapidas y payouts semanales.', 'Abrir cuenta con 30% OFF') +
     refLink('My Funded Futures', 'https://myfundedfutures.com/challenge?ref=4982', 'RAED', '15% de descuento', 'Con MFF genere $5,309 en payouts en un solo mes con una sola cuenta.', 'Abrir cuenta con 15% OFF') +
@@ -262,7 +268,8 @@ async function sendWelcomeEmail(name, email) {
 
 // Email 2 (dia 2): Recordatorio Tradeify
 async function sendTradeifyReminder(name, email) {
-  var content = '<h2 style="font-size:1.5rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Hola ' + (name || '') + ', recuerda esto 👇</h2>' +
+  var content = '<img src="https://the1percentformula.com/cert4.png" alt="Payout Certificate $1,610" style="width:100%;display:block;margin-bottom:24px;border:1px solid #C8A84B44">' +
+    '<h2 style="font-size:1.5rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Hola ' + (name || '') + ', recuerda esto 👇</h2>' +
     '<p style="color:#888;line-height:1.7;margin-bottom:24px">Con el codigo <strong style="color:#C8A84B">RAED</strong> tienes <strong style="color:#22c55e">30% de descuento</strong> en Tradeify — la prop firm que yo uso para operar GC y Nasdaq en vivo.</p>' +
     '<div style="background:#111;border-left:3px solid #C8A84B;padding:20px 24px;margin-bottom:24px">' +
     '<p style="font-size:.88rem;color:#999;line-height:1.7">Tradeify me da acceso a cuentas de hasta $200K para operar futuros. Sus evaluaciones son rapidas y los payouts llegan semanalmente. Es la firma con la que trabajo activamente.</p>' +
@@ -273,7 +280,8 @@ async function sendTradeifyReminder(name, email) {
 
 // Email 3 (dia 4): Recordatorio Bitget + PAXG
 async function sendBitgetReminder(name, email) {
-  var content = '<h2 style="font-size:1.5rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Copia mis trades en Bitget 📈</h2>' +
+  var content = '<img src="https://the1percentformula.com/raed-f1.jpg" alt="Raed en F1 Miami" style="width:100%;height:200px;object-fit:cover;object-position:top;display:block;margin-bottom:24px;border:1px solid #C8A84B22">' +
+    '<h2 style="font-size:1.5rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Copia mis trades en Bitget 📈</h2>' +
     '<p style="color:#888;line-height:1.7;margin-bottom:24px">Sabias que en Bitget puedes copiar automaticamente las senales del Grupo de Oro operando <strong style="color:#C8A84B">PAXG</strong> — una crypto que replica exactamente la grafica del oro?</p>' +
     '<div style="background:#111;border-left:3px solid #C8A84B;padding:20px 24px;margin-bottom:24px">' +
     '<p style="font-size:.88rem;color:#999;line-height:1.7;margin-bottom:8px"><strong style="color:#F0EBE0">PAXG (PAX Gold)</strong> es un token respaldado por oro fisico que replica el movimiento del XAU/USD. Puedes operarlo en Bitget con copy trading — automatico, sin estar frente a la pantalla.</p>' +
@@ -285,7 +293,8 @@ async function sendBitgetReminder(name, email) {
 
 // Email 4 (dia 7): Oferta planes
 async function sendPlansReminder(name, email) {
-  var content = '<h2 style="font-size:1.5rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Una semana en la comunidad 🐂</h2>' +
+  var content = '<img src="https://the1percentformula.com/raed-sea.jpg" alt="Raed operando desde el Mediterraneo" style="width:100%;height:200px;object-fit:cover;object-position:top;display:block;margin-bottom:24px;border:1px solid #C8A84B22">' +
+    '<h2 style="font-size:1.5rem;font-weight:700;color:#F0EBE0;margin-bottom:8px">Una semana en la comunidad 🐂</h2>' +
     '<p style="color:#888;line-height:1.7;margin-bottom:24px">Ya llevas una semana recibiendo mi analisis diario de GC y Nasdaq. Si quieres el siguiente nivel — mis senales en vivo con entrada, SL y TP exactos — los planes estan disponibles:</p>' +
     '<div style="display:grid;gap:12px;margin-bottom:28px">' +
     '<div style="background:#111;border:1px solid #C8A84B22;padding:20px 24px"><div style="color:#C8A84B;font-weight:700;margin-bottom:4px">Senales del Oro — $300/mes</div><p style="font-size:.85rem;color:#888">3-5 senales semanales de GC y Nasdaq con entrada, SL y TP. Directo a tu WhatsApp.</p></div>' +
