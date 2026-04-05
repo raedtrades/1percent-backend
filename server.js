@@ -169,7 +169,19 @@ function buildDailyEmail(articles) {
     sectionHTML('Nasdaq · NQ Futuros', '📈', sections.nasdaq) +
     sectionHTML('Prop Firms · Funded Trading', '💼', sections.prop) +
     sectionHTML('Crypto · USDT Markets', '₿', sections.crypto) +
-    '<div style="margin-top:32px;padding-top:24px;border-top:1px solid #222;text-align:center">' +
+    '<div style="margin-top:32px;padding-top:24px;border-top:1px solid #C8A84B22">' +
+    (function() {
+      var g = getGalletaDelDia();
+      return '<div style="background:#111;border:1px solid #C8A84B33;padding:24px 28px;margin-bottom:28px;text-align:center">' +
+        '<div style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#C8A84B;font-family:monospace;margin-bottom:12px;opacity:0.7">🥠 Tu galleta de la fortuna del dia</div>' +
+        '<div style="font-size:36px;color:#C8A84B;margin-bottom:10px;opacity:0.6">' + g.kanji + '</div>' +
+        '<div style="font-size:1rem;font-style:italic;color:#F0EBE0;margin-bottom:10px;font-family:Georgia,serif">\"' + g.paper + '\"</div>' +
+        '<div style="width:30px;height:1px;background:#C8A84B;margin:12px auto;opacity:0.4"></div>' +
+        '<p style="font-size:.85rem;color:#888;line-height:1.7;max-width:400px;margin:0 auto">' + g.msg + '</p>' +
+        '<div style="margin-top:12px;font-size:9px;color:#555;font-family:monospace;letter-spacing:0.15em;text-transform:uppercase">' + g.tipo + ' · @raedtrades</div>' +
+        '</div>';
+    })() +
+    '<div style="text-align:center;margin-bottom:16px">' +
     '<a href="https://the1percentformula.com/#planes" style="background:#C8A84B;color:#060608;padding:14px 32px;text-decoration:none;font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase">Ver Planes →</a>' +
     '</div>' +
     '</div>' +
@@ -222,6 +234,115 @@ app.get('/', function(req, res) {
 });
 
 // ── EMAIL TEMPLATES ──
+
+// ── GALLETA MESSAGES ──
+var galletaMsgs = [
+  {kanji:"急", paper:"Sigues mirando el mercado desde afuera.", msg:"Llevas meses diciendo 'cuando aprenda más, empiezo'. El mercado no te va a esperar. Cada día sin operar es dinero que no existe.", tipo:"Urgencia"},
+  {kanji:"道", paper:"El agua no lucha. Fluye.", msg:"Tao Te Ching: 'Lo más blando vence a lo más duro.' El trader que fluye con el mercado en vez de luchar contra él es el que retira.", tipo:"道 · Tao"},
+  {kanji:"師", paper:"Tu gurú tiene más alumnos que trades.", msg:"Si el que te enseña trading vive de vender cursos... te está enseñando a pagar cursos. No a ganar en el mercado.", tipo:"Humor"},
+  {kanji:"知", paper:"Conocerte vale más que cualquier estrategia.", msg:"Lao Tzu: 'Conocer a los demás es inteligencia. Conocerse a uno mismo es iluminación.' El trader que conoce sus emociones ya ganó la mitad.", tipo:"道 · Tao"},
+  {kanji:"机", paper:"Con $100 tienes acceso a $50,000 real.", msg:"No es publicidad. Así funcionan las prop firms. Tú pones la habilidad. Ellos el capital. ¿Cuánto tiempo más vas a ignorar esto?", tipo:"Dato Real"},
+  {kanji:"贪", paper:"Abriste 8 trades. Cerraste 7 en rojo.", msg:"El overtrade es la adicción más cara del trading. 3 trades buenos a la semana valen más que 20 operaciones por aburrimiento.", tipo:"Error Clásico"},
+  {kanji:"虚", paper:"El vacío entre trades tiene valor.", msg:"Tao Te Ching: 'El vacío dentro de una taza es lo que la hace útil.' La paciencia entre tus trades es lo que los hace rentables.", tipo:"道 · Tao"},
+  {kanji:"时", paper:"Mientras lees esto hay traders retirando.", msg:"No porque sean más inteligentes. Porque empezaron antes que tú. El mejor momento fue hace un año. El segundo mejor momento es hoy.", tipo:"Urgencia"},
+  {kanji:"护", paper:"Tu stop loss no es una derrota.", msg:"El trader que no usa stop loss es el mismo que después dice 'perdí todo en una operación'. El SL no te hace perder. Te mantiene en el juego.", tipo:"Error Clásico"},
+  {kanji:"警", paper:"Pagaste señales. Sigues en rojo.", msg:"Si quien te da señales no puede mostrarte certificados reales de cuentas fondeadas... le estás pagando por sus opiniones. No por sus resultados.", tipo:"Urgencia"},
+  {kanji:"柔", paper:"El árbol rígido se rompe.", msg:"Tao Te Ching: 'El hombre rígido es discípulo de la muerte. El flexible es discípulo de la vida.' Tu sistema de trading debe adaptarse, no ser dogma.", tipo:"道 · Tao"},
+  {kanji:"讽", paper:"Compraste el curso. El profe compró un auto.", msg:"Los que venden cursos de trading para vivir... viven de vender cursos. No de hacer trading. Busca a alguien que opere con capital real.", tipo:"Humor"},
+  {kanji:"算", paper:"Una cuenta = $1,500/mes. Diez cuentas...", msg:"Haz la matemática. Con 10 cuentas activas operando el mismo sistema son $15,000 al mes. El trabajo es casi el mismo. El capital no.", tipo:"Dato Real"},
+  {kanji:"开", paper:"El mercado abre mañana. ¿Tú también?", msg:"Mientras lees esto el oro se mueve. GC Comex no espera. La pregunta no es si el mercado tiene oportunidades — es si tú las estás tomando.", tipo:"Urgencia"},
+  {kanji:"无", paper:"Actuar sin forzar.", msg:"Wu Wei — el principio Tao de no forzar: El mejor trade es el que el mercado te ofrece, no el que tú le exiges. Esperar es una estrategia.", tipo:"道 · Tao"},
+  {kanji:"圈", paper:"Tu comunidad de trading te está frenando.", msg:"Si todos en tu grupo también están perdiendo, no es mala suerte. Es que están aprendiendo de las personas equivocadas.", tipo:"Urgencia"},
+  {kanji:"实", paper:"Llevas 1 año en demo. Felicidades.", msg:"La cuenta demo no paga el alquiler. El mercado real se comporta diferente cuando tu dinero está en juego. Sal de la simulación.", tipo:"Verdad Incómoda"},
+  {kanji:"金", paper:"El oro siempre ha sido dinero real.", msg:"GC Comex no es una moda. El oro ha sido reserva de valor por 5,000 años. Los que saben operarlo tienen una ventaja que no caduca.", tipo:"Dato Real"},
+  {kanji:"时", paper:"Conocer el momento es todo.", msg:"Tao Te Ching: 'Hay un momento para avanzar y un momento para retroceder.' En trading, saber cuándo NO entrar vale más que saber cuándo entrar.", tipo:"道 · Tao"},
+  {kanji:"险", paper:"No arriesgas tu dinero. Arriesgas el de ellos.", msg:"Con capital fondeado, las pérdidas las absorbe la firma. Las ganancias son tuyas. Es el único negocio donde el riesgo no es simétrico.", tipo:"Dato Real"},
+  {kanji:"变", paper:"¿Cuántos meses más de pérdidas necesitas?", msg:"Cada mes que pasa sin un sistema probado es un mes de matrícula que le pagas al mercado. En algún momento hay que cambiar de maestro.", tipo:"Urgencia"},
+  {kanji:"忍", paper:"La paciencia es la estrategia más rentable.", msg:"El Tao del trader: El río no corre — fluye. No hay prisa. Hay dirección. El trader que espera la entrada perfecta gana más que el que persigue el precio.", tipo:"道 · Tao"},
+  {kanji:"控", paper:"Tu gestión de riesgo es tu seguro de vida.", msg:"Puedes tener la mejor estrategia del mundo. Sin gestión de riesgo no duras. Una sola mala operación sin SL borra semanas de trabajo.", tipo:"Dato Real"},
+  {kanji:"读", paper:"El precio te da pistas. ¿Las estás leyendo?", msg:"GC Comex habla. El precio deja huellas. El problema no es el mercado — es que la mayoría no sabe escucharlo.", tipo:"Análisis"},
+  {kanji:"周", paper:"Hay traders que retiran cada semana.", msg:"No es fantasía. Las prop firms pagan semanalmente. Yo lo hago. La pregunta es cuándo vas a empezar tú.", tipo:"Dato Real"},
+  {kanji:"息", paper:"El descanso también es parte del sistema.", msg:"Tao Te Ching: 'El que sabe descansar tiene la ventaja.' El trader que opera cansado comete errores que no cometería fresco.", tipo:"道 · Tao"},
+  {kanji:"应", paper:"No necesitas predecir. Necesitas reaccionar.", msg:"Los mejores traders no saben qué va a pasar. Saben qué hacer cuando pasa. Gestión de riesgo + disciplina = consistencia.", tipo:"Mentalidad"},
+  {kanji:"我", paper:"Tu ego es tu peor enemy en el mercado.", msg:"El mercado no te odia ni te quiere. No tiene opinión sobre ti. Pero tu ego sí tiene opinión sobre el mercado — y eso cuesta dinero.", tipo:"Humor"},
+  {kanji:"富", paper:"La riqueza llega al que tiene paciencia.", msg:"Proverbio chino: 'El que espera con paciencia obtiene lo que busca. El que corre solo encuentra cansancio.' Aplica perfectamente al trading.", tipo:"道 · Tao"},
+  {kanji:"始", paper:"Empecé en agosto 2025 sin experiencia.", msg:"Sin experiencia en futuros. Con la mentalidad correcta. $18,000 en mi mejor mes. El mercado no pregunta tu historia — solo tus resultados.", tipo:"Historia Real"},
+  {kanji:"析", paper:"¿Cuándo fue la última vez que analizaste un trade?", msg:"No el resultado — el proceso. ¿Por qué entraste? ¿Respetaste el plan? ¿Qué harías diferente? El trader que no aprende de sus trades no mejora.", tipo:"Reflexión"},
+  {kanji:"债", paper:"El mercado no te debe nada.", msg:"No te debe recuperar tus pérdidas. No te debe el trade perfecto. Solo te ofrece oportunidades. Tú decides si estás preparado para tomarlas.", tipo:"Perspectiva"},
+  {kanji:"计", paper:"Operas con miedo o con un plan.", msg:"El miedo toma decisiones en fracción de segundos. El plan las toma con calma antes de abrir el mercado. Solo uno es consistentemente rentable.", tipo:"Disciplina"},
+  {kanji:"静", paper:"El silencio antes del trade es poder.", msg:"Tao Te Ching: 'El silencio es la fuente de la gran fuerza.' El trader que espera en silencio su setup es más peligroso que el que opera todo el día.", tipo:"道 · Tao"},
+  {kanji:"决", paper:"Hay personas que ya tomaron la decisión.", msg:"Ahora mismo hay traders con cuentas fondeadas operando GC. No son más listos que tú. Solo tomaron la decisión antes.", tipo:"Urgencia"},
+  {kanji:"行", paper:"Tu análisis no vale nada sin ejecución.", msg:"El mejor análisis técnico del mundo no gana dinero si no ejecutas. El mercado premia la acción disciplinada, no la teoría perfecta.", tipo:"Ejecución"},
+  {kanji:"水", paper:"El agua encuentra su camino siempre.", msg:"Tao Te Ching: 'El agua supera los obstáculos sin esfuerzo.' El trader adaptable encuentra oportunidades en cualquier mercado.", tipo:"道 · Tao"},
+  {kanji:"惰", paper:"¿Cuánto cuesta no hacer nada?", msg:"La inacción también tiene un precio. Cada mes que no construyes el sistema es un mes que otros sí lo están construyendo.", tipo:"Urgencia"},
+  {kanji:"证", paper:"Las prop firms pagan. Yo tengo 4 certificados.", msg:"$1,147 + $1,200 + $1,352 + $1,610 en retiros verificados. Las prop firms son reales. Los resultados son reales.", tipo:"Prueba Real"},
+  {kanji:"完", paper:"El perfeccionismo mata más trades que el mercado.", msg:"Esperar la entrada perfecta es otra forma de no actuar. El trader exitoso actúa con el 80% de la información. El perfeccionista sigue esperando.", tipo:"Humor"},
+  {kanji:"备", paper:"La fortuna favorece al preparado.", msg:"Séneca: 'La suerte es lo que pasa cuando la preparación se encuentra con la oportunidad.' En trading: sistema + disciplina + gestión.", tipo:"Sabiduría"},
+  {kanji:"假", paper:"Tu cuenta demo tiene 99% de winrate.", msg:"Felicidades. Ahora intenta eso con dinero real y emociones reales. El mercado demo y el real son dos universos diferentes.", tipo:"Humor"},
+  {kanji:"系", paper:"Cada retiro es una validación del sistema.", msg:"No es suerte. Es un sistema replicable. Cuando el mismo proceso genera resultados consistentes, ya no es coincidencia — es maestría.", tipo:"Consistencia"},
+  {kanji:"步", paper:"El camino de mil millas empieza con un paso.", msg:"Lao Tzu. En trading ese primer paso es abrir una evaluación de prop firm. No el curso número 5. No el indicador nuevo. La evaluación.", tipo:"道 · Tao"},
+  {kanji:"习", paper:"¿Cuántas horas llevas estudiando sin operar?", msg:"El conocimiento sin práctica es entretenimiento. El mercado no paga por saber teoría. Paga por ejecutar correctamente bajo presión.", tipo:"Urgencia"},
+  {kanji:"诚", paper:"El oro no miente.", msg:"GC Comex refleja el miedo y la codicia global. Quien aprende a leer esas emociones en el precio tiene una ventaja que ningún algoritmo puede quitarle.", tipo:"Mercado"},
+  {kanji:"简", paper:"Lo simple funciona. Lo complejo impresiona.", msg:"El trader con 3 indicadores bien entendidos gana más que el que tiene 15. La simplicidad es maestría disfrazada.", tipo:"Mentalidad"},
+  {kanji:"顺", paper:"El Tao del trader es la no-resistencia.", msg:"No pelees contra la tendencia. No pelees contra tu stop loss. No pelees contra el mercado. El que no resiste, fluye. El que fluye, gana.", tipo:"道 · Tao"},
+  {kanji:"账", paper:"¿Tu cuenta bancaria refleja tus conocimientos?", msg:"Si llevas meses estudiando y tu cuenta sigue igual... el problema no es el conocimiento. Es la aplicación. Es el sistema.", tipo:"Urgencia"},
+  {kanji:"级", paper:"Blue Row Capital no fondea a cualquiera.", msg:"Me promovieron a Live Trader oficial porque demostré consistencia. Las prop firms serias premian la disciplina. No el winrate de una semana.", tipo:"Credencial"},
+  {kanji:"山", paper:"La montaña no se mueve para el escalador.", msg:"Proverbio chino: 'La montaña no viene a ti. Tú vas a la montaña.' El mercado no va a adaptarse a ti. Adáptate tú al mercado.", tipo:"道 · Tao"},
+  {kanji:"提", paper:"¿Cuándo fue tu último retiro real?", msg:"Si no recuerdas cuándo fue... eso ya es la respuesta. El objetivo no es ganar trades. Es retirar dinero real de forma consistente.", tipo:"Urgencia"},
+  {kanji:"管", paper:"La gestión de capital es tu superpoder.", msg:"Dos traders con la misma estrategia. Uno arriesga el 10% por trade. El otro el 1%. En 6 meses son universos diferentes.", tipo:"Gestión"},
+  {kanji:"稳", paper:"El trader exitoso aburre.", msg:"Entra. Pone el SL. Pone el TP. Espera. Sale. Repite. No hay drama. No hay adrenalina. Solo proceso. Solo resultados.", tipo:"Humor"},
+  {kanji:"阴", paper:"Sin oscuridad no hay luz.", msg:"Tao Te Ching: 'El ser y el no-ser se generan mutuamente.' Las pérdidas no son el enemigo del trader. Son el maestro.", tipo:"道 · Tao"},
+  {kanji:"师", paper:"¿Cuántos gurús has seguido ya?", msg:"Si llevas 3 o más maestros de trading y sigues sin resultados... el problema no era el maestro anterior. Es el sistema. Es el enfoque.", tipo:"Urgencia"},
+  {kanji:"链", paper:"El PAXG replica el oro en crypto.", msg:"PAX Gold es un token respaldado por oro físico. Mismo movimiento que GC Comex. Sin necesidad de futuros. Accesible desde cualquier exchange.", tipo:"Dato Técnico"},
+  {kanji:"信", paper:"La confianza se construye con resultados.", msg:"No con posts de Instagram. No con screenshots de una semana buena. Con certificados verificados. Con retiros reales. Con consistencia.", tipo:"Credibilidad"},
+  {kanji:"为", paper:"El camino correcto parece inactivo.", msg:"Tao Te Ching: 'El gran hacedor parece no hacer nada.' El trader disciplinado que espera su setup parece aburrido. Hasta que retira.", tipo:"道 · Tao"},
+  {kanji:"建", paper:"¿Estás construyendo o consumiendo?", msg:"Ver videos de trading es consumir. Ejecutar un sistema real es construir. Solo uno de los dos te acerca al retiro del mes.", tipo:"Urgencia"},
+  {kanji:"忘", paper:"El mercado tiene memoria corta.", msg:"Lo que pasó ayer no determina lo que pasa hoy. Cada sesión es nueva. El trader que llega con resentimiento del día anterior ya está en desventaja.", tipo:"Mentalidad"},
+  {kanji:"薪", paper:"Tradeify paga cada semana.", msg:"No cada mes. Cada semana. Con mi código RAED tienes 30% de descuento para empezar. El sistema ya existe. Solo tienes que usarlo.", tipo:"Dato Real"},
+  {kanji:"龟", paper:"La tortuga venció al conejo.", msg:"Esopo lo dijo hace 2,500 años. El trading consistente y lento acumula más que el trading agresivo y rápido. La tortuga tiene cuenta fondeada. El conejo está en drawdown.", tipo:"Humor"},
+  {kanji:"够", paper:"¿Cuánto tiempo más le vas a regalar al mercado?", msg:"Cada pérdida sin aprendizaje es dinero regalado. Cada mes sin sistema es tiempo regalado. En algún momento hay que decidir que ya fue suficiente.", tipo:"Urgencia"},
+  {kanji:"火", paper:"El fuego que no se controla lo quema todo.", msg:"Analogía Tao: La pasión sin disciplina en trading destruye cuentas. El fuego controlado calienta el hogar. La pasión controlada genera retiros.", tipo:"道 · Tao"},
+  {kanji:"图", paper:"Nasdaq tiene patrones. GC también.", msg:"Los mercados de futuros no son aleatorios. Tienen estructura, contexto, niveles. El que aprende a leerlos tiene ventaja perpetua.", tipo:"Análisis"},
+  {kanji:"境", paper:"Tu comunidad determina tu techo.", msg:"Si todos en tu círculo están perdiendo dinero en trading... rodearte de traders que retiran es el cambio más importante que puedes hacer.", tipo:"Urgencia"},
+  {kanji:"月", paper:"El maestro verdadero señala la luna.", msg:"Proverbio Zen: 'El dedo que señala la luna no es la luna.' El buen mentor no te da el pez. Te enseña a pescar en GC Comex.", tipo:"道 · Tao"},
+  {kanji:"拳", paper:"Perder un trade no es perder el sistema.", msg:"El boxeador campeón también recibe golpes. Lo que importa es cómo responde. Un trade perdido dentro del sistema es parte del proceso.", tipo:"Resiliencia"},
+  {kanji:"钱", paper:"¿Cuándo vas a tomar en serio tu dinero?", msg:"El mercado sí se toma en serio tu dinero. Te lo quita con precisión quirúrgica si no tienes sistema. Llega el momento de ser igual de serio.", tipo:"Urgencia"},
+  {kanji:"析", paper:"El exceso de análisis paraliza.", msg:"Analysis paralysis: El trader que espera tener toda la información nunca entra. Y el mercado sigue moviéndose sin él.", tipo:"Humor"},
+  {kanji:"星", paper:"La oscuridad revela las estrellas.", msg:"Tao Te Ching: Solo en la oscuridad se ven las estrellas. El mercado bajista revela qué traders tienen sistema real y cuáles solo tuvieron suerte.", tipo:"道 · Tao"},
+  {kanji:"实", paper:"My Funded Futures me pagó 4 veces en 5 semanas.", msg:"$1,147 — $1,200 — $1,352 — $1,610. Todo verificado. Todo en un mes. Las prop firms no son teoría.", tipo:"Prueba Verificada"},
+  {kanji:"恒", paper:"El mercado premia la consistencia, no la suerte.", msg:"Una semana con 10x no significa nada si la siguiente pierdes todo. Retirar $1,500 cada mes durante 12 meses vale más que $18,000 en uno.", tipo:"Consistencia"},
+  {kanji:"换", paper:"¿Por qué seguir perdiendo con los mismos?", msg:"La definición de insanidad es hacer lo mismo esperando resultados diferentes. Si tu método actual no genera retiros reales, es hora de cambiar.", tipo:"Urgencia"},
+  {kanji:"怕", paper:"El origen de todos los miedos es la ignorancia.", msg:"Confucio: El miedo al mercado desaparece cuando entiendes el mercado. El miedo a las prop firms desaparece cuando las entiendes.", tipo:"道 · Tao"},
+  {kanji:"扩", paper:"Escalar no es abrir más trades.", msg:"Escalar es abrir más cuentas fondeadas operando el mismo sistema. Mismo riesgo por cuenta. Capital multiplicado. Retiros multiplicados.", tipo:"Modelo"},
+  {kanji:"强", paper:"El que domina a los demás es fuerte.", msg:"Lao Tzu: 'El que se domina a sí mismo es poderoso.' En trading, el que domina sus emociones ya venció al 90% del mercado.", tipo:"道 · Tao"},
+  {kanji:"风", paper:"El riesgo no es el enemigo. La ignorancia sí.", msg:"Operar con capital fondeado y stop loss definido es más seguro que dejar dinero en el banco perdiendo valor. El riesgo gestionado es oportunidad.", tipo:"Perspectiva"},
+  {kanji:"故", paper:"Cada señal tiene una historia detrás.", msg:"No es una flecha en un gráfico. Es contexto macro, nivel clave, momentum y gestión. El que entiende la historia detrás de la señal gana más.", tipo:"Análisis"},
+  {kanji:"竹", paper:"El bambú dobla. El roble se rompe.", msg:"Sabiduría Tao: En mercados volátiles, la rigidez mata cuentas. La flexibilidad del bambú — que dobla sin romperse — es la mentalidad del trader élite.", tipo:"道 · Tao"},
+  {kanji:"问", paper:"Llevas perdiendo con quien nunca ganó.", msg:"Hay una diferencia enorme entre alguien que habla de trading y alguien que tiene certificados verificados de prop firms reales.", tipo:"Urgencia"},
+  {kanji:"古", paper:"El oro lleva 5,000 años siendo valor.", msg:"Bitcoin tiene 15 años. Las acciones tienen 200. El oro tiene 5,000. Operar GC Comex es operar el activo más antiguo y más respetado del mundo.", tipo:"Historia"},
+  {kanji:"梦", paper:"¿Qué harías con $5,000 extra este mes?", msg:"No es una pregunta retórica. Es lo que genera una sola cuenta fondeada bien operada. La pregunta real es: ¿qué te está frenando?", tipo:"Visualización"},
+  {kanji:"徒", paper:"El maestro fue primero alumno.", msg:"Confucio: 'No importa cuán lento vayas, siempre y cuando no te detengas.' Cada trader exitoso pasó por la frustración que sientes hoy.", tipo:"道 · Tao"},
+  {kanji:"情", paper:"Las emociones son información. No órdenes.", msg:"El miedo te avisa de riesgo real. La euforia te avisa de sobreexposición. El trader inteligente escucha las emociones pero ejecuta según el plan.", tipo:"Inteligencia Emocional"},
+  {kanji:"习", paper:"Un mal trade no define tu carrera.", msg:"Pero un mal hábito sí. Operar sin SL una vez es un error. Operar sin SL siempre es un sistema de perder. La diferencia está en si aprendes.", tipo:"Hábitos"},
+  {kanji:"滴", paper:"El universo recompensa la acción consistente.", msg:"Principio Tao: La gota de agua que cae constantemente horada la piedra. No por su fuerza — por su consistencia. Así funciona el trading rentable.", tipo:"道 · Tao"},
+  {kanji:"备", paper:"¿Tienes plan B si el mercado te sorprende?", msg:"El mercado sorprende siempre. El trader con plan B no se sorprende. Solo ejecuta el plan alternativo. Eso es gestión de riesgo real.", tipo:"Preparación"},
+  {kanji:"渡", paper:"El que no arriesga no cruza el río.", msg:"Proverbio chino: Pero el que cruza sin preparación se ahoga. El prop trading te da el bote — la preparación, el remo. Solo tienes que aprender a usarlos.", tipo:"道 · Tao"},
+  {kanji:"自", paper:"$15,000 al mes. Desde cualquier lugar.", msg:"No es un sueño. Es mi realidad desde agosto 2025. Con capital fondeado, disciplina y el sistema correcto. El lugar geográfico es irrelevante.", tipo:"Libertad"},
+  {kanji:"学", paper:"El mercado es el mejor maestro. Y el más caro.", msg:"Aprende de alguien que ya pagó la matrícula. O págala tú. La diferencia es cuánto tiempo y dinero estás dispuesto a invertir en errores propios.", tipo:"Urgencia"},
+  {kanji:"毅", paper:"La victoria pertenece al más perseverante.", msg:"Napoleón Bonaparte. No al más inteligente. No al que tiene mejor indicador. Al que no se rinde cuando el mercado lo prueba.", tipo:"Sabiduría"},
+  {kanji:"双", paper:"GC Comex y XAUUSD. El mismo oro. Dos mundos.", msg:"GC es futuros — más apalancamiento, más estructura. XAUUSD es spot — más accesible. Dominar ambos da flexibilidad que pocos traders tienen.", tipo:"Técnico"},
+  {kanji:"树", paper:"El mejor momento para plantar un árbol fue hace 20 años.", msg:"Proverbio chino: El segundo mejor momento es ahora. No el lunes. No cuando termines el curso. Ahora.", tipo:"道 · Tao"},
+  {kanji:"家", paper:"¿Tu familia sabe lo que estás construyendo?", msg:"El prop trading no es apuesta. Es un modelo de negocio verificable con certificados, retiros y reglas claras. Merece ser tomado en serio.", tipo:"Perspectiva"},
+  {kanji:"考", paper:"El drawdown no es el fin. Es el examen.", msg:"Todo trader pasa por drawdowns. El profesional reduce tamaño. El amateur dobla la apuesta. La diferencia define quién dura.", tipo:"Gestión"},
+  {kanji:"记", paper:"Lo que no se mide no mejora.", msg:"Lleva un diario de trading. Cada entrada, cada salida, cada emoción. El trader que no mide su desempeño repite sus errores con más confianza cada vez.", tipo:"Disciplina"}
+];
+
+function getGalletaDelDia() {
+  var day = new Date().getDay() + new Date().getDate() + new Date().getMonth();
+  var idx = day % galletaMsgs.length;
+  return galletaMsgs[idx];
+}
+
 function emailWrapper(content) {
   return '<div style="max-width:600px;margin:0 auto;background:#0D0D10;font-family:Arial,sans-serif;color:#F0EBE0">' +
     '<div style="background:#060608;padding:24px 32px;text-align:center;border-bottom:2px solid #C8A84B;display:flex;align-items:center;justify-content:center;gap:16px">' +
